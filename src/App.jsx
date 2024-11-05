@@ -1,56 +1,69 @@
-// src/App.jsx
-
 // import the useState() hook
 import { useState } from 'react';
+
+const defaultFormData = {
+  firstName: '',
+  lastName: ''
+}
 
 const App = () => {
   // add placeholder text for the title
   // we'll use the form to update this state by the end of this lesson
   const [ title, setTitle ] = useState('The full name will appear here.');
-  const [formData, setFormData] = useState(defaultFormData)
+  const  [formData, setFormData] = useState(defaultFormData)
 
 
- // const [ firstName, setFirstName ] = useState('')
-  //const [ lastName, setLasttName ] = useState('')
+  // const handleFirstNameChange = (evt)=>{
+  //   setFirstName(evt.target.value)
+  // }
+  // const handleLastNameChange = (evt)=>{
+  //   setLastName(evt.target.value)
+  // }
 
-  //const HandleFirstNameChange = (evt)=>{
-    //setFirstName(evt.target.value)
- // }
-  //const HandleLastNameChange = (evt)=>{
-    //setLasttName(evt.target.value)
- // }
+  function handleChange(e){
+    // const { value } = e.target
+    // const {name} = e.target
 
- function handleChange(e){
-  const value = e.target.value
-  const key = e.target.name
- // console.log(e.target.name)
+    const {name, value} = e.target;
 
- const newFormData = {
-  ...FormData,
-  [key] : value
- }
+    const newFormData = {
+      ...formData,
+      [name] : value,
+    }
 
- setFormData(newFormData)
- }
+    setFormData(newFormData)
+  }
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault()
+
+    const {firstName, lastName} = formData;
+
+    setTitle(`${firstName} ${lastName}`)
+    setFormData(defaultFormData)
+    console.log('FormData that is submitted',formData)
+  }
 
   return (
     <>
       <h2>{title}</h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="firstName">First Name: </label>
         <input
           id="firstName"
           name="firstName"
           value={formData.firstName}
-          onChange={handleFirstNameChange}
+          onChange={handleChange}
         />
         <label htmlFor="lastName">Last Name: </label>
         <input
           id="lastName"
           name="lastName"
           value={formData.lastName}
-          onChange={handleLastNameChange}
+          onChange={handleChange}
         />
+
+        <button type="submit">Submit Your Name</button>
       </form>
     </>
   );
